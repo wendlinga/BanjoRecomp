@@ -1,5 +1,18 @@
 # Changes for Intel Mac (AMD GPU) Compatibility
 
+## Branches
+
+| Fork | Branch | Link |
+|------|--------|------|
+| `wendlinga/fmt` | `fix/intel-mac-missing-cstdlib` | https://github.com/wendlinga/fmt/tree/fix/intel-mac-missing-cstdlib |
+| `wendlinga/plume` | `fix/intel-mac-amd-gpu` | https://github.com/wendlinga/plume/tree/fix/intel-mac-amd-gpu |
+| `wendlinga/N64Recomp` | `fix/intel-mac-amd-gpu` | https://github.com/wendlinga/N64Recomp/tree/fix/intel-mac-amd-gpu |
+| `wendlinga/N64ModernRuntime` | `fix/intel-mac-amd-gpu` | https://github.com/wendlinga/N64ModernRuntime/tree/fix/intel-mac-amd-gpu |
+| `wendlinga/rt64` | `fix/intel-mac-amd-gpu` | https://github.com/wendlinga/rt64/tree/fix/intel-mac-amd-gpu |
+| `wendlinga/BanjoRecomp` | `fix/intel-mac-amd-gpu` | https://github.com/wendlinga/BanjoRecomp/tree/fix/intel-mac-amd-gpu |
+
+---
+
 These changes were made to build and run `BanjoRecompiled` on an Intel Mac with an AMD Radeon GPU (AMDMTLBronzeDriver) running macOS 15.7.4, using Homebrew LLVM 22 and the macOS 11.1 SDK.
 
 ---
