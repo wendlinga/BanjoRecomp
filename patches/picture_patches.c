@@ -155,7 +155,7 @@ RECOMP_PATCH Actor *func_802DF160(Gfx **gfx, Mtx **mtx, Vtx **vtx) {
     BKModelBin *model_bin = marker_loadModelBin(D_8037E000);
     patch_picture_model(model_bin, 262, 397, -273, -100, FROM_YZ);
 
-    modelRender_draw(gfx, mtx, &D_80368360, NULL, 1.0f, NULL, model_bin);
+    modelRender_draw(gfx, mtx, D_80368360, NULL, 1.0f, NULL, model_bin);
     gDPSetTextureFilter((*gfx)++, G_TF_BILERP);
     return this;
 }

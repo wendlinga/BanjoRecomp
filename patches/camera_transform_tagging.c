@@ -118,7 +118,7 @@ RECOMP_PATCH void viewport_setRenderViewportAndOrthoMatrix(Gfx **gfx, Mtx **mtx)
     gSPViewport((*gfx)++, &sViewportStack[sViewportStackIndex]);
 
     // @recomp Use a high precision version of the projection matrix instead of the fixed precision one. This fixes accuracy issues when rendering text using the orthographic projection.
-    guOrthoF(*mtx, -(2 * (f32)gFramebufferWidth), (2 * (f32)gFramebufferWidth), -(2 * (f32)gFramebufferHeight), (2 * (f32)gFramebufferHeight), 1.0f, 20.0f, 1.0f);
+    guOrthoF((float (*)[4])(void *)(*mtx), -(2 * (f32)gFramebufferWidth), (2 * (f32)gFramebufferWidth), -(2 * (f32)gFramebufferHeight), (2 * (f32)gFramebufferHeight), 1.0f, 20.0f, 1.0f);
     gEXMatrixFloat((*gfx)++, OS_K0_TO_PHYSICAL((*mtx)++), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
 #if 0

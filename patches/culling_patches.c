@@ -161,11 +161,11 @@ RECOMP_PATCH void actor_predrawMethod(Actor *this){
     if(this->marker->unk20 != NULL){
         sp44 = FALSE;
         if(this->unk148 != NULL){
-            animMtxList_setBoned(&this->marker->unk20, model_getAnimationList(sp48), skeletalAnim_getBoneTransformList(this->unk148));
+            animMtxList_setBoned((AnimMtxList **)(void *)&this->marker->unk20, model_getAnimationList(sp48), skeletalAnim_getBoneTransformList(this->unk148));
             sp44 = TRUE;
         }//L8032542C
         else if(this->anctrl != NULL && model_getAnimationList(sp48)){
-            anim_802897D4(&this->marker->unk20, model_getAnimationList(sp48), anctrl_getAnimPtr(this->anctrl));
+            anim_802897D4((AnimMtxList *)(void *)&this->marker->unk20, model_getAnimationList(sp48), anctrl_getAnimPtr(this->anctrl));
             sp44 = TRUE;
         }//L80325474
 

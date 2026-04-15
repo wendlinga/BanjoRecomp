@@ -105,7 +105,7 @@ RECOMP_PATCH s32 gameFile_8033CFD4(s32 gamenum){
         // @recomp Also save the extension data.
         eeprom_writeBlocks(0, SAVE_FILE_EXTENSION_OFFSET_BLOCKS + SAVE_FILE_EXTENSION_DATA_BLOCK_COUNT * filenum, extension_ptr, SAVE_FILE_EXTENSION_DATA_BLOCK_COUNT);
 
-        eeprom_error = savedata_8033CC98(filenum, save_data);
+        eeprom_error = savedata_8033CC98(filenum, (u8 *)save_data);
         if(!eeprom_error){
             __gameFile_8033CE14(gamenum);
         }

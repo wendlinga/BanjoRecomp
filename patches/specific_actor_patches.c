@@ -198,7 +198,7 @@ RECOMP_PATCH Actor *func_802E0738(ActorMarker *marker, Gfx **gfx, Mtx **mtx, Vtx
     f32 sp34[3];
     Actor *this;
 
-    this = marker_getActorAndRotation(marker, &sp34);
+    this = marker_getActorAndRotation(marker, sp34);
     
     // @recomp Check the condition for not drawing this actor if it's one of the bulls during the intro.
     if (skip_drawing_intro_bulls(marker->modelId)) {

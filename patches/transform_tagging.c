@@ -829,10 +829,10 @@ RECOMP_PATCH BKModelBin *modelRender_draw(Gfx **gfx, Mtx **mtx, f32 position[3],
     }
     else if(D_8038371C == 0 && modelRenderModelBin->animation_list_offset_18){
         if(modelRenderBoneTransformList == NULL){
-            animMtxList_setBoneless(&modelRenderAnimMtxList, (u8*)model_bin + model_bin->animation_list_offset_18);
+            animMtxList_setBoneless(&modelRenderAnimMtxList, (BKAnimationList *)((u8*)model_bin + model_bin->animation_list_offset_18));
         }
         else{
-            animMtxList_setBoned(&modelRenderAnimMtxList, (u8*)model_bin + model_bin->animation_list_offset_18, modelRenderBoneTransformList);
+            animMtxList_setBoned(&modelRenderAnimMtxList, (BKAnimationList *)((u8*)model_bin + model_bin->animation_list_offset_18), modelRenderBoneTransformList);
         }
         D_8038371C = modelRenderAnimMtxList;
     }
@@ -846,10 +846,10 @@ RECOMP_PATCH BKModelBin *modelRender_draw(Gfx **gfx, Mtx **mtx, f32 position[3],
     cur_model_uses_ex_vertex = FALSE;
 
     if(model_bin->unk28 != NULL && D_8038371C != NULL){
-        func_802E6BD0((u8*)modelRenderModelBin + modelRenderModelBin->unk28, modelRendervertexList, D_8038371C);
-        
+        func_802E6BD0((BKModelUnk28List *)((u8*)modelRenderModelBin + modelRenderModelBin->unk28), modelRendervertexList, D_8038371C);
+
         // @recomp Do the skinning again on a high precision version of the vertex buffer. Force its usage for any subsequent display lists.
-        recomp_apply_cpu_skinning((u8 *)modelRenderModelBin + modelRenderModelBin->unk28, modelRendervertexList, D_8038371C, NULL, &skinned_pos, &skinned_vel);
+        recomp_apply_cpu_skinning((BKModelUnk28List *)((u8 *)modelRenderModelBin + modelRenderModelBin->unk28), modelRendervertexList, D_8038371C, NULL, &skinned_pos, &skinned_vel);
     }
     // @recomp Apply skinning using the floats applied by the map model.
     else if (sMapSkinningPosFloats != NULL) {

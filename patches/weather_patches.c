@@ -260,7 +260,7 @@ RECOMP_PATCH void func_802F8110(struct3s *this, Gfx **gdl, Mtx **mptr, u32 arg3)
         // @recomp Set the model transform ID before drawing the rain particle.
         cur_drawn_model_transform_id = RAIN_PARTICLE_TRANSFORM_ID_START + RAIN_PARTICLE_ID_COUNT * get_rain_particle_id(iPtr);
 
-        modelRender_draw(gdl, mptr, iPtr, 0, 1.0f, 0, this->unk2C);
+        modelRender_draw(gdl, mptr, iPtr->unk0, 0, 1.0f, 0, this->unk2C);
 
         // @recomp Clear the model transform ID after drawing the rain particle.
         cur_drawn_model_transform_id = 0;
