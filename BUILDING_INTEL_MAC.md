@@ -85,31 +85,40 @@ The finished app bundle will be at `build/BanjoRecompiled.app`.
 
 ## Source changes on this branch
 
-### 1. Metal crash fix — `lib/rt64/src/contrib/plume/plume_metal.cpp`
+### 1. Metal rendering fix — `lib/rt64/src/contrib/plume/plume_metal.cpp`
 
 **Root cause:** On macOS 11+, all GPUs are reported as Metal Argument Buffers
 Tier 2. The `MetalDescriptorSet` constructor therefore skips calling
 `setArgumentBuffer()` on the argument encoder (because `useArgumentBuffersTier2
 = true`). However, Intel Mac AMD GPUs do not support Metal3 / direct buffer
-addresses, so `useDirectBufferAddresses` is false and execution falls into a
-path that calls `argumentEncoder->setBuffer(...)` without ever binding a
-backing buffer — crashing inside
-`AMDMTLBronzeDriver -[BronzeMtlIndirectArgumentBufferEncoder setBuffer:offset:atIndex:]`.
+addresses (`useDirectBufferAddresses` is false).
 
-**Fix:** In `MetalDescriptorSet::setDescriptor`, call `setArgumentBuffer()`
-before `setBuffer()` in the non-direct-address path:
+The original code had two distinct bugs for this hardware:
+
+1. **Crash** — Buffer binding called `argumentEncoder->setBuffer(...)` without
+   first binding a backing buffer, crashing inside
+   `AMDMTLBronzeDriver -[BronzeMtlIndirectArgumentBufferEncoder setBuffer:offset:atIndex:]`.
+
+2. **Black screen** — Texture and sampler binding wrote `gpuResourceID()` values
+   directly into the argument buffer (the Metal3 bindless path). Intel AMD GPUs
+   do not support this pattern and produce black output. Textures and samplers
+   must also be written via the argument encoder on non-Metal3 hardware.
+
+**Fix:** In `MetalDescriptorSet::setDescriptor` and `bindImmutableSamplers`,
+gate all three resource-type paths on `useDirectBufferAddresses` (not on the
+broader `useArgumentBuffersTier2`). For buffers, textures, and samplers alike,
+call `setArgumentBuffer()` before any encode operation in the non-Metal3 path:
 
 ```cpp
-// In the else-branch of `if (device->useDirectBufferAddresses)`
+// In the else-branch of `if (device->useDirectBufferAddresses)` —
+// applies to buffers, textures, and samplers
 argumentBuffer.argumentEncoder->setArgumentBuffer(argumentBuffer.mtl,
                                                   argumentBuffer.offset);
-argumentBuffer.argumentEncoder->setBuffer(nativeBuffer,
-                                          bufferDescriptor->offset,
-                                          argumentIndex);
+// then setBuffer / setTexture / setSamplerState as appropriate
 ```
 
-This call is a no-op on Apple Silicon and any other Metal3-capable hardware
-since those devices take the direct-address path.
+These calls are no-ops on Apple Silicon and any other Metal3-capable hardware
+since those devices always take the direct-address path.
 
 **Upstream PR:** [renderbag/plume#94](https://github.com/renderbag/plume/pull/94)
 
